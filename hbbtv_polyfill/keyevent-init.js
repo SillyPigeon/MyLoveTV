@@ -1,4 +1,4 @@
-const keyEventInit = function () {
+export const keyEventInit = function () {
     console.log("hbbtv-polyfill: keyEventInit");
 
     window.KeyEvent = window.KeyEvent || {}; // defining default global KeyEvent as defined in CEA-HTML 2014 specs
@@ -80,7 +80,7 @@ const keyEventInit = function () {
     window.addEventListener(
         "keydown",
         (evt) => {
-            console.log("hbbtv-polyfill: location " + window.location);
+            // console.log("hbbtv-polyfill: location " + window.location);
             console.log("hbbtv-polyfill: browser keydown " + evt.keyCode, "internal", evt.detail && evt.detail.hbbInternal === true);
             if (evt.detail && evt.detail.hbbInternal === true) {
                 return;
@@ -170,29 +170,3 @@ const keyEventInit = function () {
     }
 
 };
-
-function init() {
-    console.log("hbbtv-polyfill: load");
-    // global helper namespace to simplify testing
-    keyEventInit();
-
-    window.addEventListener("message", (event) => {
-        if (event.origin !== "chrome-extension://omjcihhlgmcnkhblhpiggckfnjgapebn")
-          return;
-
-        if(event.data.topic == "app_url"){
-            console.log("app_url change to ", event.data.data);
-            window.location.href = event.data.data;
-        }
-        // ...
-    }, false);
-
-    console.log("hbbtv-polyfill: loaded finished");
-}
-
-
-if (!document.body) {
-    document.addEventListener("DOMContentLoaded", init);
-} else {
-    init();
-}

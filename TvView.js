@@ -39,7 +39,6 @@ chrome.webRequest.onHeadersReceived.addListener((details) => {
             responseHeaders: headers
         };
     }
-    console.log("onHeadersReceived", details);
     headers.forEach(function (header) {
         var headerWithHbbtv = header.value.substring(0, knownMimeTypes.hbbtv.length) === knownMimeTypes.hbbtv ||
             header.name.toLowerCase().substring(0, knownMimeTypes.atsc.length) === knownMimeTypes.atsc;
@@ -50,6 +49,7 @@ chrome.webRequest.onHeadersReceived.addListener((details) => {
             case knownMimeTypes.atsc:
             case 'content-type':
                 if (headerWithHbbtv || headerWithCeHtml || headerWithOhtv || headerWithBml) {
+                    console.log("onHeadersReceived", details);
                     header.value = 'application/xhtml+xml'; // override current content-type to avoid browser automatic download
                     // store current url
                     // storeTabAndUrl(details.tabId, url);
@@ -94,11 +94,15 @@ chrome.webNavigation.onCommitted.addListener((details) => {
 
 window.onload = function () {
     var iframe = document.createElement('iframe');
-        iframe.src = "http://hbbtv.zdf.de/3satm/redbutton.php";
-        //iframe.src = "http://orfhbbtv.orf.at/orf/newsportal/index.html";
+        //test suit
+        iframe.src = "http://itv.mit-xperts.com/hbbtvtest/videoformats/";
+
+        //broadcast Live
+        // iframe.src = "http://hbbtv.zdf.de/3satm/redbutton.php";
+        // iframe.src = "http://orfhbbtv.orf.at/orf/newsportal/index.html";
         // iframe.src = "http://ma.anixa.tv/smarttv/startaristo.php";
-        //iframe.src = "http://hbbtv.zdf.de/3satm/index.php";
         // iframe.src = "http://bibeltv.c.nmdn.net/sathd/index.php"
+
         iframe.style.width = "1280px";
         iframe.style.height  = "720px";
         iframe.allow = "autoplay";
