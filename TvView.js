@@ -95,7 +95,7 @@ chrome.webNavigation.onCommitted.addListener((details) => {
 window.onload = function () {
     var iframe = document.createElement('iframe');
         //test suit
-        iframe.src = "http://itv.mit-xperts.com/hbbtvtest/videoformats/";
+        iframe.src = "http://itv.mit-xperts.com/hbbtvtest/";
 
         //broadcast Live
         // iframe.src = "http://hbbtv.zdf.de/3satm/redbutton.php";
