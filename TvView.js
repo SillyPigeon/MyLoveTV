@@ -71,13 +71,47 @@ chrome.webRequest.onHeadersReceived.addListener((details) => {
     ['blocking', 'responseHeaders'].concat(navigator.userAgent.includes('Chrom') ? chrome.webRequest.OnHeadersReceivedOptions.EXTRA_HEADERS : [])
 );
 
+// chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+//     console.log("exec content script in iframe");
+//     chrome.tabs.executeScript(tabId, {
+//         file: 'hbbtv.js',
+//         runAt: 'document_end',
+//     });
+// });
+
+chrome.webNavigation.onCommitted.addListener((details) => {
+
+    // inject content_script_iframe into iframe
+    if (details.parentFrameId === 0) { // inject into first level child frames
+        console.log("exec content script in iframe", details);
+        chrome.tabs.executeScript(details.tabId, {
+            file: 'inject_scripts.js',
+            runAt: 'document_end',
+            frameId: details.frameId,
+        });
+    }
+});
+
 window.onload = function () {
     var iframe = document.createElement('iframe');
-        // iframe.src = "http://hbbtv.zdf.de/3satm/redbutton.php";
-        iframe.src = "http://hbbtv.zdf.de/3satm/index.php";
+        iframe.src = "http://hbbtv.zdf.de/3satm/redbutton.php";
+        //iframe.src = "http://orfhbbtv.orf.at/orf/newsportal/index.html";
+        // iframe.src = "http://ma.anixa.tv/smarttv/startaristo.php";
+        //iframe.src = "http://hbbtv.zdf.de/3satm/index.php";
+        // iframe.src = "http://bibeltv.c.nmdn.net/sathd/index.php"
         iframe.style.width = "1280px";
         iframe.style.height  = "720px";
         iframe.allow = "autoplay";
-
+        iframe.id = "tvView"
+        
         document.body.appendChild(iframe);
+
+        document.getElementById("app_go").addEventListener('click', function(){
+            var url = document.getElementById("app_url").value;
+            if(url != "Please enter app url"){
+                iframe.contentWindow.postMessage({topic: "app_url", data: url},"*")
+            }
+        }, false);
 }
+
+
