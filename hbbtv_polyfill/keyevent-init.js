@@ -81,7 +81,7 @@ export const keyEventInit = function () {
         "keydown",
         (evt) => {
             // console.log("hbbtv-polyfill: location " + window.location);
-            console.log("hbbtv-polyfill: browser keydown " + evt.keyCode, "internal", evt.detail && evt.detail.hbbInternal === true);
+            // console.log("hbbtv-polyfill: browser keydown " + evt.keyCode, "internal", evt.detail && evt.detail.hbbInternal === true);
             if (evt.detail && evt.detail.hbbInternal === true) {
                 return;
             }
