@@ -17,7 +17,8 @@
       "<all_urls>"
     ],
     "web_accessible_resources": [
-      "hbbtv_polyfill/*"
+      "hbbtv_polyfill/*",
+      "https://cdn.dashjs.org/latest/dash.all.min.js"
     ],
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
   }
